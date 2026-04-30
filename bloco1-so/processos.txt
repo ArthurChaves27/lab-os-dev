@@ -6,37 +6,45 @@
 # Cole abaixo a saída de cada comando e anote o que observou.
 
 echo $$
-  PID do shell: 
+  PID do shell: 47
 
 cat /proc/[PID]/status   (substitua [PID] pelo número real)
-  PID:
-  PPID (processo pai):
-  State:
+  PID: 47
+  PPID (processo pai): 1
+  State: S (sleeping)
 
 cat /proc/[PID]/stat (campos relevantes)
-  Campo 2 — nome do executável:
-  Campo 3 — estado:
-  Campos 14 e 15 — utime / stime:
+  Campo 2 — nome do executável: (sh)
+  Campo 3 — estado: S
+  Campos 14 e 15 — utime / stime: 16 25
 
 ps aux (primeiras linhas)
-  [cole aqui]
+  USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  1.3   3136  2516 ?        S    10:12   0:00 /bin/sh /sbin/init
 
 
 # PARTE B — Processo filho
 # Cole a saída dos comandos e responda:
 
 sleep 5m &
-  PID do filho: 
+  PID do filho: [1] 98
 
 cat /proc/[FILHO]/status | grep -E "Pid|PPid|State"
-  [cole aqui]
+State:  S (sleeping)
+Pid:    98
+PPid:   47
+TracerPid:      0
 
 ps -o pid,ppid,stat,cmd (antes do kill)
-  [cole aqui]
+   PID  PPID STAT CMD
+   47     1 Ss   sh -l
+   98    47 S    sleep 5m
+  102    47 R+   ps -o pid,ppid,stat,cmd
 
 ps -o pid,ppid,stat,cmd (depois do kill)
-  [cole aqui]
-
+  PID  PPID STAT CMD
+   47     1 Ss   sh -l
+  103    47 R+   ps -o pid,ppid,stat,cmd
 
 # PARTE C — Questões de síntese
 
