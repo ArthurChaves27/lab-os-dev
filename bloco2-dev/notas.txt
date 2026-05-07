@@ -5,38 +5,147 @@
 # FASE 1 — Pré-processador (gcc -E)
 # Quantas linhas tem soma.i? O que o pré-processador expandiu?
 
-Linhas em soma.i:
-Observação:
-
+Linhas em soma.i: 757
+Observação: Uma quantidade bem maior de linhas que o proprio codigo.
 
 # FASE 2 — Assembly (gcc -S)
 # Cole aqui 5 a 10 linhas de soma.s que você considera mais
 # interessantes e explique o que cada uma faz.
 
-Trecho de soma.s:
+Trecho de soma.s: soma:
+        addi    sp,sp,-32
+        sd      s0,24(sp)
+        addi    s0,sp,32
+        mv      a5,a0
+        mv      a4,a1
+        sw      a5,-20(s0)
+        mv      a5,a4
+        sw      a5,-24(s0)
+        lw      a4,-20(s0)
+        lw      a5,-24(s0)
+        addw    a5,a4,a5
+        sext.w  a5,a5
+        mv      a0,a5
+        ld      s0,24(sp)
+        addi    sp,sp,32
+        jr      ra
+        .size   soma, .-soma
+        .section        .rodata
+        .align  3
 
-Explicação:
+  main:
+          addi    sp,sp,-16
+          sd      ra,8(sp)
+          sd      s0,0(sp)
+          addi    s0,sp,16
+          li      a1,5
+          li      a0,7
+          call    soma
+          mv      a5,a0
+          mv      a1,a5
+          lui     a5,%hi(.LC0)
+          addi    a0,a5,%lo(.LC0)
+          call    printf
+          li      a5,0
+          mv      a0,a5
+          ld      ra,8(sp)
+          ld      s0,0(sp)
+          addi    sp,sp,16
+          jr      ra
+          .size   main, .-main
+          .ident  "GCC: (GNU) 10.2.1 20201125 (Red Hat 10.2.1-9)"
+          .section        .note.GNU-stack,"",@progbits
+
+Explicação: é possivel identificar as funções em assembly e ter uma ideia do que ela pode estar fazendo.
 
 
 # FASE 3 — Código objeto (gcc -c)
 # Cole a saída de: file soma.o
 
-file soma.o:
+file soma.o: soma.o: ELF 64-bit LSB executable, UCB RISC-V, version 1 (SYSV), dynamically lin
+ked, interpreter /lib/ld-linux-riscv64-lp64d.so.1, BuildID[sha1]=aa1a72714155e26
+e98cd25a9197b664ee7a576a3, for GNU/Linux 4.15.0, not stripped
 
 # Cole a saída de: nm soma.o
 
-nm soma.o:
+nm soma.o: 0000000000010280 r __abi_tag
+000000000001041a t .annobin_abi_note.c
+000000000001041a t .annobin_abi_note.c_end
+00000000000103e0 t .annobin_abi_note.c_end.exit
+00000000000103e0 t .annobin_abi_note.c_end.hot
+00000000000103e0 t .annobin_abi_note.c_end.startup
+00000000000103e0 t .annobin_abi_note.c_end.unlikely
+00000000000103e0 t .annobin_abi_note.c.exit
+00000000000103e0 t .annobin_abi_note.c.hot
+00000000000103e0 t .annobin_abi_note.c.startup
+00000000000103e0 t .annobin_abi_note.c.unlikely
+000000000001041a t .annobin_init.c
+000000000001041a t .annobin_init.c_end
+00000000000103e0 t .annobin_init.c_end.exit
+00000000000103e0 t .annobin_init.c_end.hot
+00000000000103e0 t .annobin_init.c_end.startup
+00000000000103e0 t .annobin_init.c_end.unlikely
+00000000000103e0 t .annobin_init.c.exit
+00000000000103e0 t .annobin_init.c.hot
+00000000000103e0 t .annobin_init.c.startup
+00000000000103e0 t .annobin_init.c.unlikely
+000000000001041a t .annobin_static_reloc.c
+000000000001041a t .annobin_static_reloc.c_end
+00000000000103e0 t .annobin_static_reloc.c_end.exit
+00000000000103e0 t .annobin_static_reloc.c_end.hot
+00000000000103e0 t .annobin_static_reloc.c_end.startup
+00000000000103e0 t .annobin_static_reloc.c_end.unlikely
+00000000000103e0 t .annobin_static_reloc.c.exit
+00000000000103e0 t .annobin_static_reloc.c.hot
+00000000000103e0 t .annobin_static_reloc.c.startup
+00000000000103e0 t .annobin_static_reloc.c.unlikely
+0000000000012038 B __BSS_END__
+0000000000012034 B __bss_start
+0000000000012034 b completed.0
+0000000000012000 D __DATA_BEGIN__
+0000000000012000 D __data_start
+0000000000012000 W data_start
+000000000001041a t deregister_tm_clones
+0000000000010460 t __do_global_dtors_aux
+0000000000011e28 d __do_global_dtors_aux_fini_array_entry
+0000000000012028 D __dso_handle
+0000000000011e30 d _DYNAMIC
+0000000000012034 D _edata
+0000000000012038 B _end
+000000000001047e t frame_dummy
+0000000000011e20 d __frame_dummy_init_array_entry
+00000000000105cc r __FRAME_END__
+0000000000012020 d _GLOBAL_OFFSET_TABLE_
+0000000000012800 A __global_pointer$
+0000000000010534 r __GNU_EH_FRAME_HDR
+0000000000011e28 d __init_array_end
+0000000000011e20 d __init_array_start
+0000000000012030 D _IO_stdin_used
+000000000001052a T __libc_csu_fini
+00000000000104d2 T __libc_csu_init
+                 U __libc_start_main@@GLIBC_2.27
+000000000001040e t load_gp
+00000000000104a8 T main
+                 U printf@@GLIBC_2.27
+00000000000103a0 t _PROCEDURE_LINKAGE_TABLE_
+0000000000010438 t register_tm_clones
+0000000000012028 D __SDATA_BEGIN__
+0000000000010480 T soma
+00000000000103e0 T _start
+0000000000012000 D __TMC_END__
 
 # Quais símbolos aparecem? O que significa o marcador "U" ao lado
 # de printf?
 
-Observação sobre nm:
+Observação sobre nm: significa que ela foi referenciada porem não definida.
 
 
 # FASE 4 — Ligação (gcc soma.o -o soma)
 # O que mudou após a ligação? Execute ./soma e registre a saída.
 
-Saída de ./soma:
+#detalhe! que eu só consegui rodar usando gcc soma.c -o soma, pois gcc soma.o -o soma estava dando erro de compilação.
+
+Saída de ./soma: 12
 
 
 # QUESTÕES DE SÍNTESE
@@ -45,10 +154,10 @@ Saída de ./soma:
 #    apresentação esse mesmo problema apareceu? O que o ligador
 #    faz com esse símbolo?
 
-Resposta 1:
+Resposta 1: slide 3
 
 
 # 2. Compare soma.i com soma.s: qual das duas saídas é análoga
 #    ao "código objeto" do montador histórico? Justifique.
 
-Resposta 2:
+Resposta 2: soma.s é usado pelo montador para criar um objeto.
