@@ -7,28 +7,34 @@
 # Cole abaixo a linha relevante da saída de:
 # strace echo "ola" 2>&1 | grep write
 
-Saída filtrada:
+Saída filtrada: write(1, "ola\n", 4ola
 
 # Anote:
 #   Argumento 1 (file descriptor):
 #   O que está sendo escrito:
 #   Valor de retorno:
 
-fd:
-conteúdo:
-retorno:
+fd: 1
+conteúdo: "ola\n"
+retorno: 4ola
 
 
 # PARTE B — Programa C com write() direto
 
 # Cole aqui o código de syscall_direto.c que você escreveu:
 
-[código-fonte]
+#include <unistd.h>
+
+int main() {
+  const char msg[] = "Modo usuario -> kernel via write()\n";
+  write(1, msg, sizeof(msg) - 1);
+  return 0;
+}
 
 
 # Cole aqui a linha write(...) da saída de strace -o strace.txt ./syscall_direto:
 
-[saída do strace]
+Modo usuario -> kernel via write()
 
 
 # PARTE C — Questões de síntese
@@ -39,6 +45,8 @@ retorno:
 
 Resposta 1:
 
+Através de bibliotecas que possibilitam o uso de funções como write, que também é usado no comando Echo.
+
 
 # 2. Na apresentação sobre a genealogia do software, vimos que os programas de canal
 #    eram responsáveis por intermediar a transferência de dados entre a memória e os
@@ -46,3 +54,5 @@ Resposta 1:
 #    operacional moderno herda esse papel? 
 
 Resposta 2:
+
+Os compiladores de códigos que possiblitam rodas comandos e programas sem comunicar com a CPU.
